@@ -13,28 +13,14 @@ struct mydata {
 	const char city[64];
 };
 
-const struct mydata dataarray[] = {
+const struct mydata capitals[] = {
 	{.state="Illinois", .city="Springfield"},
 	{.state="California", .city="Sacramento"},
 	{.state="Colorado", .city="Denver"},
 	{.state="Hawaii", .city="Honolulu"},
 };
 
-const void * iterate_capital(const void * previous, const void * first)
-{
-	struct mydata * pointer, * pfirst;
-
-	if (previous == NULL)
-		return first;
-
-	pointer = (struct mydata *) previous;
-	pfirst = (struct mydata *) first;
-
-	if ((pointer - pfirst) + 1 >= sizeof(dataarray) / sizeof(struct mydata))
-		return NULL;
-
-	return (void *)(pointer + 1);
-};
+CEMPLATES_ARRAY_ITERATOR(iterate_capital, mydata, capitals);
 
 const char * format_capital(const char * key, const void * object)
 {
@@ -58,7 +44,7 @@ int main(int argc, char *argv[])
 
 	cemplates_add_template(&printer, "root", string);
 	cemplates_add_handler(&printer, "capitals", format_capital);
-	cemplates_add_iterator(&printer, "#capitals", iterate_capital, dataarray);
+	cemplates_add_iterator(&printer, "#capitals", iterate_capital, capitals);
 
 	output = cemplates_process(printer, "root");
 	puts(output);
