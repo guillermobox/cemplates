@@ -1,10 +1,10 @@
 CFLAGS += -g
 
-all: cemplates
+all: main
 
 .PHONY: clean all
 
 clean:
 	rm -f *.o cemplates
 
-cemplates: cemplates.o
+main: main.o cemplates.o
